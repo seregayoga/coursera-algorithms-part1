@@ -10,9 +10,9 @@ public class Percolation {
     private final int n;
     private final int sitesNumber;
     private final WeightedQuickUnionUF uf;
+    private final WeightedQuickUnionUF ufFullness;
     private final boolean[] sites;
     private int openSites = 0;
-    private boolean isBottomTouched = false;
 
     public Percolation(int n) {
         if (n <= 0) {
@@ -22,6 +22,7 @@ public class Percolation {
         this.n = n;
         sitesNumber = n * n;
         uf = new WeightedQuickUnionUF(sitesNumber + 2);
+        ufFullness = new WeightedQuickUnionUF(sitesNumber + 1);
         sites = new boolean[sitesNumber + 1];
     }
 
@@ -40,39 +41,29 @@ public class Percolation {
 
         if (row == 1) {
             uf.union(0, number);
+            ufFullness.union(0, number);
         }
         else if (this.isOpen(row - 1, col)) {
             uf.union(rowAndColToNumber(row - 1, col), number);
+            ufFullness.union(rowAndColToNumber(row - 1, col), number);
         }
 
         if (row == n) {
-            isBottomTouched = true;
-
-            // if does not percolate and is full
-            if (uf.connected(0, number)) {
-                uf.union(sitesNumber + 1, number);
-            }
+            uf.union(sitesNumber + 1, number);
+            // we don't need call union for fullness here
         }
         else if (this.isOpen(row + 1, col)) {
             uf.union(rowAndColToNumber(row + 1, col), number);
+            ufFullness.union(rowAndColToNumber(row + 1, col), number);
         }
 
         if (col > 1 && this.isOpen(row, col - 1)) {
             uf.union(rowAndColToNumber(row, col - 1), number);
+            ufFullness.union(rowAndColToNumber(row, col - 1), number);
         }
         if (col < n && this.isOpen(row, col + 1)) {
             uf.union(rowAndColToNumber(row, col + 1), number);
-        }
-
-        // check for possible bottom connections
-        // if does not percolate and is full
-        if (isBottomTouched && row != n && uf.connected(0, number)) {
-            for (int i = sitesNumber - n + 1; i <= sitesNumber; i++) {
-                if (sites[i] && uf.connected(i, number)) {
-                    uf.union(sitesNumber + 1, i);
-                    break;
-                }
-            }
+            ufFullness.union(rowAndColToNumber(row, col + 1), number);
         }
 
         sites[rowAndColToNumber(row, col)] = true;
@@ -83,7 +74,7 @@ public class Percolation {
     }
 
     public boolean isFull(int row, int col) {
-        return uf.connected(0, rowAndColToNumber(row, col));
+        return ufFullness.connected(0, rowAndColToNumber(row, col));
     }
 
     public int numberOfOpenSites() {

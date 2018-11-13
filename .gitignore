@@ -2,4 +2,5 @@ week1/percolation/*
 algs4.jar
 !week1/percolation/Percolation.java
 !week1/percolation/PercolationStats.java
+!week1/percolation/Makefile
 
