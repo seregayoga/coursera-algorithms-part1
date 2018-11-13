@@ -50,7 +50,7 @@ public class Percolation {
 
         if (row == n) {
             uf.union(sitesNumber + 1, number);
-            // we don't need call union for fullness here
+            // we don't need to call union for fullness here
         }
         else if (this.isOpen(row + 1, col)) {
             uf.union(rowAndColToNumber(row + 1, col), number);
