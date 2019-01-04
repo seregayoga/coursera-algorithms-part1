@@ -1,6 +1,12 @@
 week1/percolation/*
+week2/queues/*
 algs4.jar
+
+!week1/percolation/Makefile
 !week1/percolation/Percolation.java
 !week1/percolation/PercolationStats.java
-!week1/percolation/Makefile
+!week2/queues/Makefile
+!week2/queues/Deque.java
+!week2/queues/Permutation.java
+!week2/queues/RandomizedQueue.java
 
