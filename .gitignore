@@ -1,5 +1,6 @@
 week1/percolation/*
 week2/queues/*
+week3/collinear/*
 algs4.jar
 
 !week1/percolation/Makefile
@@ -9,4 +10,8 @@ algs4.jar
 !week2/queues/Deque.java
 !week2/queues/Permutation.java
 !week2/queues/RandomizedQueue.java
+!week2/queues/RandomizedQueue.java
+!week3/collinear/Point.java
+!week3/collinear/BruteCollinearPoints.java
+!week3/collinear/FastCollinearPoints.java
 
