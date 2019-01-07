@@ -1,5 +1,3 @@
-import edu.princeton.cs.algs4.*;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -40,15 +38,12 @@ public class FastCollinearPoints {
     }
 
     public LineSegment[] segments() {
-        if (!segments.isEmpty()) {
+        if (!segments.isEmpty() || points.length < 4) {
             return segments.toArray(new LineSegment[0]);
         }
 
-        ArrayList<ArrayList<Point>> saved = new ArrayList<ArrayList<Point>>();
+        ArrayList<ArrayList<Point>> ownSegments = new ArrayList<ArrayList<Point>>();
         for (Point p : points) {
-            if (points.length == 1) {
-                break;
-            }
 
             Point[] clonedPoints = points.clone();
             Arrays.sort(clonedPoints, p.slopeOrder());
@@ -73,15 +68,11 @@ public class FastCollinearPoints {
                     Collections.sort(pointsInLine);
                     Point first = pointsInLine.get(0);
                     Point last = pointsInLine.get(pointsInLine.size() - 1);
-                    LineSegment segment = new LineSegment(first, last);
 
                     ArrayList<Point> ownSegment = new ArrayList<Point>();
                     ownSegment.add(first);
                     ownSegment.add(last);
-                    if (!saved.contains(ownSegment)) {
-                        segments.add(segment);
-                        saved.add(ownSegment);
-                    }
+                    ownSegments.add(ownSegment);
                 }
 
                 prevSlope = currSlope;
@@ -92,36 +83,31 @@ public class FastCollinearPoints {
             }
         }
 
+        if (ownSegments.isEmpty()) {
+            return segments.toArray(new LineSegment[0]);
+        }
+
+        ownSegments.sort((ArrayList<Point> segment1, ArrayList<Point> segment2) -> {
+            if (!segment1.get(0).equals(segment2.get(0))) {
+                return segment1.get(0).compareTo(segment2.get(0));
+            }
+            return segment1.get(1).compareTo(segment2.get(1));
+        });
+
+        ArrayList<Point> firstOwnSegment = ownSegments.get(0);
+
+        segments.add(new LineSegment(firstOwnSegment.get(0), firstOwnSegment.get(1)));
+        for (int i = 1; i < ownSegments.size(); i++) {
+            ArrayList<Point> ownSegment = ownSegments.get(i);
+            if (!ownSegment.equals(ownSegments.get(i - 1))) {
+                segments.add(new LineSegment(ownSegment.get(0), ownSegment.get(1)));
+            }
+        }
+
         return segments.toArray(new LineSegment[0]);
     }
 
     public static void main(String[] args) {
         // empty
-        // read the n points from a file
-        In in = new In(args[0]);
-        int n = in.readInt();
-        Point[] points = new Point[n];
-        for (int i = 0; i < n; i++) {
-            int x = in.readInt();
-            int y = in.readInt();
-            points[i] = new Point(x, y);
-        }
-
-        // draw the points
-        StdDraw.enableDoubleBuffering();
-        StdDraw.setXscale(0, 32768);
-        StdDraw.setYscale(0, 32768);
-        for (Point p : points) {
-            p.draw();
-        }
-        StdDraw.show();
-
-        // print and draw the line segments
-        FastCollinearPoints collinear = new FastCollinearPoints(points);
-        for (LineSegment segment : collinear.segments()) {
-            StdOut.println(segment);
-            segment.draw();
-        }
-        StdDraw.show();
     }
 }
