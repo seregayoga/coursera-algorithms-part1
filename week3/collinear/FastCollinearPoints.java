@@ -27,19 +27,21 @@ public class FastCollinearPoints {
         }
 
         segments = new ArrayList<LineSegment>();
+
+        this.calculateSegments();
     }
 
     public int numberOfSegments() {
-        if (segments.isEmpty()) {
-            this.segments();
-        }
-
         return segments.size();
     }
 
     public LineSegment[] segments() {
-        if (!segments.isEmpty() || points.length < 4) {
-            return segments.toArray(new LineSegment[0]);
+        return segments.toArray(new LineSegment[0]);
+    }
+
+    private void calculateSegments() {
+        if (points.length < 4) {
+            return;
         }
 
         ArrayList<ArrayList<Point>> ownSegments = new ArrayList<ArrayList<Point>>();
@@ -84,7 +86,7 @@ public class FastCollinearPoints {
         }
 
         if (ownSegments.isEmpty()) {
-            return segments.toArray(new LineSegment[0]);
+            return;
         }
 
         ownSegments.sort((ArrayList<Point> segment1, ArrayList<Point> segment2) -> {
@@ -103,8 +105,6 @@ public class FastCollinearPoints {
                 segments.add(new LineSegment(ownSegment.get(0), ownSegment.get(1)));
             }
         }
-
-        return segments.toArray(new LineSegment[0]);
     }
 
     public static void main(String[] args) {

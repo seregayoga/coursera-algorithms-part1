@@ -26,19 +26,21 @@ public class BruteCollinearPoints {
         }
 
         segments = new ArrayList<LineSegment>();
+
+        this.calculateSegments();
     }
 
     public int numberOfSegments() {
-        if (segments.isEmpty()) {
-            this.segments();
-        }
-
         return segments.size();
     }
 
     public LineSegment[] segments() {
-        if (!segments.isEmpty()) {
-            return segments.toArray(new LineSegment[0]);
+        return segments.toArray(new LineSegment[0]);
+    }
+
+    private void calculateSegments() {
+        if (points.length < 4) {
+            return;
         }
 
         ArrayList<ArrayList<Point>> saved = new ArrayList<ArrayList<Point>>();
@@ -93,8 +95,6 @@ public class BruteCollinearPoints {
                 }
             }
         }
-
-        return segments.toArray(new LineSegment[0]);
     }
 
     public static void main(String[] args) {
