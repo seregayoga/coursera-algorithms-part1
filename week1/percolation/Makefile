@@ -1,6 +1,6 @@
 .PHONY: all
 all: zip
 
-.PHONE: zip
+.PHONY: zip
 zip:
 	zip percolation-submit.zip Percolation.java PercolationStats.java
