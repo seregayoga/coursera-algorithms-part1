@@ -1,17 +1,25 @@
-week1/percolation/*
-week2/queues/*
-week3/collinear/*
 algs4.jar
 
+week1/percolation/*
 !week1/percolation/Makefile
 !week1/percolation/Percolation.java
 !week1/percolation/PercolationStats.java
+
+week2/queues/*
 !week2/queues/Makefile
 !week2/queues/Deque.java
 !week2/queues/Permutation.java
 !week2/queues/RandomizedQueue.java
 !week2/queues/RandomizedQueue.java
+
+week3/collinear/*
+!week3/collinear/Makefile
 !week3/collinear/Point.java
 !week3/collinear/BruteCollinearPoints.java
 !week3/collinear/FastCollinearPoints.java
+
+week4/8puzzle/*
+!week4/8puzzle/Makefile
+!week4/8puzzle/Board.java
+!week4/8puzzle/Solver.java
 
