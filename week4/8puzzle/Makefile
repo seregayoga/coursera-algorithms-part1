@@ -3,5 +3,5 @@ all: zip
 
 .PHONY: zip
 zip:
-	zip 8puzzle Board.java Solver.java
+	zip 8puzzle.zip Board.java Solver.java
 

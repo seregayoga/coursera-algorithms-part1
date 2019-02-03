@@ -23,3 +23,8 @@ week4/8puzzle/*
 !week4/8puzzle/Board.java
 !week4/8puzzle/Solver.java
 
+week5/kdtree/*
+!week5/kdtree/Makefile
+!week5/kdtree/PointSET.java
+!week5/kdtree/KdTree.java
+
