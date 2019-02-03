@@ -94,18 +94,30 @@ public class KdTree {
                 nearestPoint = p;
             }
 
-            if (lb != null && lb.rect.distanceSquaredTo(point) < shortestDistance) {
-                Point2D lbPoint = lb.nearest(point, shortestDistance);
-                if (lbPoint != null) {
-                    shortestDistance = point.distanceSquaredTo(lbPoint);
-                    nearestPoint = lbPoint;
-                }
+            if (lb == null && rt == null) {
+                return nearestPoint;
             }
 
-            if (rt != null && rt.rect.distanceSquaredTo(point) < shortestDistance) {
-                Point2D rtPoint = rt.nearest(point, shortestDistance);
-                if (rtPoint != null) {
-                    nearestPoint = rtPoint;
+            ArrayList<Node> nodes = new ArrayList<>();
+            if (rt == null) {
+                nodes.add(lb);
+            } else if (lb == null) {
+                nodes.add(rt);
+            } else if (lb.rect.distanceSquaredTo(point) < rt.rect.distanceSquaredTo(point)) {
+                nodes.add(lb);
+                nodes.add(rt);
+            } else {
+                nodes.add(rt);
+                nodes.add(lb);
+            }
+
+            for (Node node : nodes) {
+                if (node.rect.distanceSquaredTo(point) < shortestDistance) {
+                    Point2D nodePoint = node.nearest(point, shortestDistance);
+                    if (nodePoint != null) {
+                        shortestDistance = point.distanceSquaredTo(nodePoint);
+                        nearestPoint = nodePoint;
+                    }
                 }
             }
 
@@ -130,20 +142,22 @@ public class KdTree {
             throw new IllegalArgumentException();
         }
 
-        if (contains(p)) {
-            return;
-        }
-
         this.count++;
 
         if (isEmpty()) {
             RectHV rect = new RectHV(MIN_COORD, MIN_COORD, MAX_COORD, MAX_COORD);
             root = new Node(p, Node.VERTICAL, rect);
+
             return;
         }
 
         Node curr = root;
         while (true) {
+            if (curr.p.equals(p)) {
+                this.count--;
+                return;
+            }
+
             if (curr.isVertical()) {
                 if (p.x() < curr.p.x()) {
                     if (curr.lb != null) {
